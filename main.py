@@ -1,8 +1,8 @@
-import requests
-import json
+import random
 from sudoku_solver import *
 from menus import *
 from time import time
+from sudoku import Sudoku
 
 
 def time_convert(sec):
@@ -123,25 +123,12 @@ if __name__ == '__main__':
                         ng = True
         
         if ng:
-            d = [
-                [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0]
-            ]
-            size = 9
+            d = Sudoku(3, 3, seed=random.randint(1, 100000)).difficulty(level / 4).board
 
-            sudoku_data = requests.get(f"http://www.cs.utep.edu/cheon/ws/sudoku/new/?size={size}&level={level}")
-
-            sudoku = json.loads(sudoku_data.text)
-
-            for x in sudoku['squares']:
-                d[x["x"]][x["y"]] = x["value"]
+            for i in range(9):
+                for j in range(9):
+                    if not d[i][j]:
+                        d[i][j] = 0
 
             screen.fill((255, 255, 255))
 
@@ -167,3 +154,4 @@ if __name__ == '__main__':
         screen.blit(txt, (250, 20))
 
         pygame.display.update()
+
